@@ -212,7 +212,7 @@ Each test holds out one corpus. The table is learned from the other corpora and 
 | ICDAR 2019 DE4 and EN1 (mean) | Antiqua with long s, 16th–18th c. | 0.79 | 0.71 |
 | kurrent-vlm benchmark, 21 sources (mean) | Kurrent handwriting, Gemini, Claude and Transkribus | 0.68 | 0.71 |
 
-The `kurrent` test holds out one benchmark source at a time, so no page of the held-out source trains the table. `kurrent` beats or ties `general` on all 21 sources. Levenshtein scores 0.60.
+The `kurrent` test holds out one benchmark source at a time, so no page of the held-out source trains the table. `kurrent` beats `general` on 20 of the 21 sources and trails it by 0.004 on the other. Levenshtein scores 0.60.
 
 ## Learning costs
 

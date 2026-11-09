@@ -98,6 +98,7 @@ if "--kurrent" in sys.argv:
     rows = []
     for src in sorted({s for d in bench.values() for s in d["source"].unique()}):
         train = {c: d.filter(pl.col("source") != src).drop("source") for c, d in bench.items()}
+        train = {c: d for c, d in train.items() if d.height}
         test = {src: pl.concat([d.filter(pl.col("source") == src).drop("source") for d in bench.values()])}
         sample, lexicon = test_set(test, src)
         if len(sample) < 100:

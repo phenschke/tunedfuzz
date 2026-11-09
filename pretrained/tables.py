@@ -10,9 +10,10 @@ TEST_ONLY = {"BLN600", "trove_clean", "chronam", "bhl_tesseract", "bhl_kraken", 
              "rise_fraktur", "rise_medieval"}
 
 # Models whose kurrent-vlm bench readings train the kurrent table. Weaker models are left out. The
-# bench pages are the eval set of another project, so they train only the kurrent table.
+# bench pages are the eval set of another project, so they train only the kurrent table, as does the
+# private corpus kurrent_extra.
 KBENCH_MODELS = ["argon4", "fable51", "opus55", "flash38", "titan1", "titan2"]
-KURRENT_ONLY = {f"kbench_{m}" for m in KBENCH_MODELS}
+KURRENT_ONLY = {"kurrent_extra", *(f"kbench_{m}" for m in KBENCH_MODELS)}
 
 # The type each corpus is printed in, judged from its scans and misreadings. Fraktur readings turn k
 # into f and V into B, which Antiqua readings almost never do. Cyrillic and the subsets in older
@@ -22,7 +23,7 @@ SCRIPTS = {
                 "trove", "BLN600", "trove_clean", "chronam", "bhl_tesseract", "bhl_kraken", "bhl_vlm"],
     "fraktur": ["munich_directories", "icdar_CZ1", "icdar_DE1", "icdar_DE2", "icdar_DE3", "icdar_DE7",
                 "rise_fraktur"],
-    "kurrent": [f"kbench_{m}" for m in KBENCH_MODELS],
+    "kurrent": sorted(KURRENT_ONLY),
 }
 SCRIPT_OF = {c: s for s, cs in SCRIPTS.items() for c in cs}
 
