@@ -1,0 +1,20 @@
+Package: tunedfuzz
+Title: Fuzzy String Matching with Learned Edit Costs
+Version: 0.1.0
+Authors@R: person("Pascal", "Henschke", email = "pascal.henschke@econ.lmu.de", role = c("aut", "cre"))
+Description: A weighted edit distance with multi-character edits (such as 'tz'
+    read as 'ß'), exact nearest-match search under it, and edit costs learned
+    from pairs of true strings and their misreadings, such as OCR, handwriting
+    recognition or transcription output. The core is written in Rust and shared
+    with the Python package of the same name.
+License: MIT + file LICENSE
+URL: https://github.com/phenschke/tunedfuzz
+BugReports: https://github.com/phenschke/tunedfuzz/issues
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Config/rextendr/version: 0.5.0
+SystemRequirements: Cargo (Rust's package manager), rustc >= 1.85, xz
+Depends: R (>= 4.2)
+Suggests: testthat (>= 3.0.0)
+Config/testthat/edition: 3

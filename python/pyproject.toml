@@ -1,0 +1,35 @@
+[build-system]
+requires = ["maturin>=1.9,<2"]
+build-backend = "maturin"
+
+[project]
+name = "tunedfuzz"
+description = "Fuzzy string matching with edit costs learned from OCR and transcription errors, and exact nearest-match search"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "Pascal Henschke", email = "pascal.henschke@econ.lmu.de" }]
+keywords = ["fuzzy matching", "levenshtein", "edit distance", "ocr", "record linkage", "htr"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Text Processing",
+    "Topic :: Text Processing :: Linguistic",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/phenschke/tunedfuzz"
+Documentation = "https://github.com/phenschke/tunedfuzz#readme"
+Issues = "https://github.com/phenschke/tunedfuzz/issues"
+
+[dependency-groups]
+dev = ["numpy", "pytest"]
+
+[tool.maturin]
+module-name = "tunedfuzz"

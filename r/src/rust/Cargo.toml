@@ -1,0 +1,22 @@
+[package]
+name = "tunedfuzz-r"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+publish = false
+
+[lib]
+name = "tunedfuzz"
+crate-type = ["rlib", "staticlib"]
+
+[[bin]]
+name = "document"
+path = "document.rs"
+
+[dependencies]
+tfz = { package = "tunedfuzz", path = "core" }
+extendr-api = "0.9"
+
+[profile.release]
+lto = true
+codegen-units = 1

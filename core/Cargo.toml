@@ -1,0 +1,17 @@
+[package]
+name = "tunedfuzz"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "Fuzzy string matching with edit costs learned from OCR and transcription errors, and exact nearest-match search"
+authors = ["Pascal Henschke <pascal.henschke@econ.lmu.de>"]
+license = "MIT"
+repository = "https://github.com/phenschke/tunedfuzz"
+documentation = "https://docs.rs/tunedfuzz"
+readme = "README.md"
+keywords = ["fuzzy", "levenshtein", "edit-distance", "ocr", "string-matching"]
+categories = ["text-processing", "algorithms"]
+
+[dependencies]
+csv = "1.4"
+rayon = "1.12"

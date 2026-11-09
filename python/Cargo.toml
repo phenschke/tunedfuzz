@@ -1,0 +1,13 @@
+[package]
+name = "tunedfuzz-python"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "tunedfuzz"
+crate-type = ["cdylib"]
+
+[dependencies]
+tfz = { package = "tunedfuzz", path = "../core" }
+pyo3 = { version = "0.30", features = ["abi3-py310"] }
