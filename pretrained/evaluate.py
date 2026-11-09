@@ -6,7 +6,10 @@ lexicon for each misread word. Top-1 is the share of misread words whose cheapes
 truth, with ties split evenly. A corpus whose type tables.SCRIPTS lists is also ranked by that
 type's table, learned without it. The Munich address books test on the surnames of every third year.
 
-Usage: evaluate.py <pairs dir> [--prior]
+With --kurrent, each source of the kurrent-vlm bench is held out in turn. Its misread words are ranked
+by the kurrent table learned from the other sources, so no page trains the table that ranks it.
+
+Usage: evaluate.py <pairs dir> [--prior | --kurrent]
 """
 import random
 import sys
@@ -19,7 +22,7 @@ from rapidfuzz import process
 from rapidfuzz.distance import JaroWinkler, Levenshtein
 
 from common import ratio
-from tables import SCRIPT_OF, SCRIPTS, TEST_ONLY, costs, learn, load
+from tables import KURRENT_ONLY, SCRIPT_OF, SCRIPTS, TEST_ONLY, costs, learn, load
 
 MIN_LEXICON = 3
 TOP_K = 30
@@ -69,7 +72,7 @@ def retrieval(variants, lexicon, tables: dict[str, tfz.Costs]) -> dict[str, floa
 
 def held_out(corpora, c, script=None):
     """Returns the training corpora other than c and its siblings, limited to one type if given."""
-    excl = {c, *SIBLINGS.get(c, [])}
+    excl = {c, *SIBLINGS.get(c, []), *(() if script == "kurrent" else KURRENT_ONLY)}
     keep = set(SCRIPTS[script]) if script else set(corpora)
     return [x for x in corpora if x not in TEST_ONLY and x not in excl and x in keep]
 
@@ -88,9 +91,24 @@ def table_without(corpora, c, script=None) -> tfz.Costs:
 corpora = load(sys.argv[1])
 pl.Config.set_tbl_rows(40)
 
-if "--prior" not in sys.argv:
+if "--kurrent" in sys.argv:
+    bench = {c: corpora[c].with_columns(source=pl.col("doc").str.split("|").list.first())
+             for c in sorted(KURRENT_ONLY & set(corpora))}
+    fixed = {name: tfz.Costs.pretrained(name) for name in ["general", "fraktur"]}
     rows = []
-    for c in sorted(corpora, key=lambda c: (c.startswith("icdar_"), c)):
+    for src in sorted({s for d in bench.values() for s in d["source"].unique()}):
+        train = {c: d.filter(pl.col("source") != src).drop("source") for c, d in bench.items()}
+        test = {src: pl.concat([d.filter(pl.col("source") == src).drop("source") for d in bench.values()])}
+        sample, lexicon = test_set(test, src)
+        if len(sample) < 100:
+            continue
+        tables = {"levenshtein": tfz.Costs(), **fixed, "kurrent": costs(learn(train, list(train)))}
+        rows.append({"held_out": src.split(":")[-1], "n": len(sample), **retrieval(sample, lexicon, tables)})
+        print(rows[-1], flush=True)
+    print(pl.DataFrame(rows))
+elif "--prior" not in sys.argv:
+    rows = []
+    for c in sorted(set(corpora) - KURRENT_ONLY, key=lambda c: (c.startswith("icdar_"), c)):
         sample, lexicon = test_set(corpora, c)
         tables = {"levenshtein": tfz.Costs(), "general": table_without(corpora, c)}
         script = SCRIPT_OF.get(c)

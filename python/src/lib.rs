@@ -83,7 +83,7 @@ impl Costs {
 
     /// Loads a directed table shipped with the library, learned from public (truth, reading) pairs.
     /// "general" comes from every training corpus, "antiqua" and "fraktur" from the corpora printed
-    /// in that type. The table edits truth into reading, so call distance(truth, reading), or build
+    /// in that type, and "kurrent" from HTR of German handwriting in Kurrent. The table edits truth into reading, so call distance(truth, reading), or build
     /// an Index of true names with costs.reversed(). Use it as is, or as the prior of learn_costs.
     #[staticmethod]
     #[pyo3(signature = (name = "general"))]

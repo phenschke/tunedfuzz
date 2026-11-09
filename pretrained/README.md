@@ -30,6 +30,10 @@ uv run --with polars --with ../python python pairs_rise.py downloads/rise pairs/
 ```
 
 ```bash
+PYTHONPATH=../../kurrent-vlm/src uv run --no-project --with polars --with rapidfuzz python pairs_kurrent_bench.py pairs/kurrent_bench.parquet
+```
+
+```bash
 uv run --with polars --with ../python python build.py pairs ../core/data
 ```
 
@@ -41,6 +45,12 @@ uv run --with polars --with numpy --with rapidfuzz --with ../python python evalu
 uv run --with polars --with numpy --with rapidfuzz --with ../python python evaluate.py pairs --prior
 ```
 
+```bash
+uv run --with polars --with numpy --with rapidfuzz --with ../python python evaluate.py pairs --kurrent
+```
+
+`build.py pairs ../core/data kurrent` rebuilds only the named table.
+
 `--with ../python` builds the Python package from source, which needs Rust. A built wheel works too.
 
 ## Files
@@ -51,12 +61,17 @@ uv run --with polars --with numpy --with rapidfuzz --with ../python python evalu
 | `common.py` | Splits aligned or diffed texts into (truth, reading) word pairs |
 | `pairs_*.py` | One corpus each, written as (corpus, doc, gt, ocr, n) |
 | `tables.py` | Test-only corpora, the type of each corpus, corpus weighting, seeds and the call to `learn_costs` |
-| `build.py` | Learns `general` from every training corpus, and `antiqua` and `fraktur` from the corpora in that type |
-| `evaluate.py` | Leave-one-corpus-out retrieval for `general` and the type tables, and small samples learned with `general` as prior |
+| `pairs_kurrent_bench.py` | Reads six models' runs on the kurrent-vlm benchmark through its scorer, one corpus per model |
+| `build.py` | Learns `general` from every training corpus but the benchmark ones, and `antiqua`, `fraktur` and `kurrent` from the corpora in that type |
+| `evaluate.py` | Leave-one-corpus-out retrieval for `general` and the type tables, small samples learned with `general` as prior, and leave-one-source-out retrieval for `kurrent` |
 
 ## Corpora
 
 The Munich address books and civil registers are private. The shipped tables include them, but their pairs and the script that builds those pairs are not published. Without them, `build.py` learns from the public corpora alone, and `evaluate.py` skips the Munich tests.
+
+The kurrent-vlm benchmark lives on the storagebox and `/tank/data/kurrent-vlm`, so
+`pairs_kurrent_bench.py` runs only where those are mounted. Its pages include the private Munich
+certificates, so its pairs are not published either.
 
 The test corpora are BLN600, the clean Overproof set, Chronicling America, BHL and RISE.
 `build.py` never trains on them.

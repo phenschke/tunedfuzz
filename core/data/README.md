@@ -7,6 +7,7 @@
 | `general` | Every training corpus below, each weighted to the same number of words |
 | `antiqua` | The corpora in Antiqua (roman) type: Overproof and ICDAR DE4, EN1, ES1, FR1, FR2, FR3 and SL1 |
 | `fraktur` | The corpora in Fraktur: the Munich address books and ICDAR CZ1, DE1, DE2, DE3 and DE7 |
+| `kurrent` | HTR of German Kurrent handwriting by six models on the kurrent-vlm benchmark |
 
 Each ICDAR subset's type was judged from its pages and its misreadings, because OCR of Fraktur turns k into f and V into B. The Kurrent registers, Bulgarian (Cyrillic) and the subsets in older blackletter or of unclear type (DE5, DE6, NL1, PL1) train only `general`.
 
@@ -18,6 +19,19 @@ Each ICDAR subset's type was judged from its pages and its misreadings, because 
 | Overproof dataset 1 | Sydney Morning Herald, 1842–1954 | ABBYY FineReader | 8.1M | Not stated |
 | Munich address books | Surnames in Fraktur directories, 1845–1957 | Gemini | 6.2M | Private, not published |
 | Munich civil registers | Kurrent birth and death certificates, 1876–1882 | Transkribus Titan I and II | 55k | Private, not published |
+
+## Kurrent corpora
+
+These train only `kurrent`.
+
+| Corpus | Text | Engine | Words | Licence |
+|---|---|---|---|---|
+| kurrent-vlm benchmark v4 | German letters, diaries and registers in Kurrent, 21 sources, and the Munich death and birth certificates | Gemini 4 Argon, Gemini 3.8 Flash, Claude Fable 5.1, Claude Opus 5.5, Transkribus Titan I and II | 1.65M | Per source; the Munich certificates are private |
+
+- Weaker models (Claude Haiku 5.5 and the open-weight models) are left out.
+- Pages in Latin script, pages not in German, and the benchmark's English, Dutch and Norwegian suite are left out.
+- Titan pairs keep only the pages Transkribus cannot have trained on.
+- The benchmark references are diplomatic and abbreviate (d, u, dr for und, und, der). A differing pair with a side of two letters or fewer is dropped, unless it differs only in case.
 
 ## Test corpora
 
@@ -52,3 +66,4 @@ Each ICDAR subset's type was judged from its pages and its misreadings, because 
 5. Learn a directed table with `learn_costs(symmetric=False)` and doubled letters, rn/m, cl/d,
    li/h, vv/w, ck/k and tz/z as seeds.
 6. Learn `antiqua` and `fraktur` the same way from the corpora in that type.
+7. Learn `kurrent` the same way from the kurrent-vlm benchmark corpora, one per model.

@@ -32,7 +32,7 @@ edits (plain Levenshtein distance).}
 
 \item{name}{Name of the pretrained table. \code{"general"} comes from every
 training corpus, \code{"antiqua"} and \code{"fraktur"} from the corpora printed in
-that type.}
+that type, and \code{"kurrent"} from HTR of German handwriting in Kurrent.}
 }
 \value{
 A \code{tfz_costs} object. \code{as.data.frame()} gives back its rows. It

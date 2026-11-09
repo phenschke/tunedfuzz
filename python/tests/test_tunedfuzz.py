@@ -212,6 +212,9 @@ def test_pretrained_and_prior():
     fraktur, antiqua = tfz.Costs.pretrained("fraktur"), tfz.Costs.pretrained("antiqua")
     assert tfz.distance("V", "B", fraktur) < 0.2 < tfz.distance("V", "B", antiqua)
 
+    # Kurrent p and g share a descender loop
+    assert tfz.distance("p", "g", tfz.Costs.pretrained("kurrent")) < 0.5 < tfz.distance("p", "g", fraktur)
+
     # A heavy prior keeps its costs where the data is silent
     pairs = [("Rauch", "Nauch", 3), ("Huber", "Huber", 30)]
     table = tfz.learn_costs(pairs, symmetric=False, prior=general, prior_weight=1e9)

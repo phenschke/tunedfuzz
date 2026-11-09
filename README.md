@@ -27,7 +27,7 @@ The library has four parts.
 - A weighted edit distance. An edit can replace several characters (`tz` by `ß`), and its cost can differ by direction.
 - An exact nearest-match search. On 110,000 surnames, a search takes about 13 ms, 26 times faster than computing every distance.
 - A learner that estimates costs from pairs of true strings and their readings.
-- Three pretrained tables, learned from OCR and HTR output in nine languages and Latin.
+- Four pretrained tables, learned from OCR and HTR output in nine languages and Latin.
 
 ## Install
 
@@ -172,7 +172,8 @@ tfz_index(truths, tfz_reverse_costs(general))
 |---|---|
 | 19th- and 20th-century print in Fraktur | `fraktur` |
 | 19th- and 20th-century print in Antiqua (roman type) | `antiqua` |
-| Older print, mixed type, handwriting | `general` |
+| German handwriting in Kurrent | `kurrent` |
+| Older print, mixed type, other handwriting | `general` |
 
 OCR fails differently on the two types. It reads Fraktur V as B and k as f, and it almost never does so in Antiqua. `general` learns from both, so it charges only 0.18 for V read as B, even for names in roman type. `antiqua` charges 0.67. Older Antiqua sets the long s, which OCR reads as f as often as it does in Fraktur, so `general` handles it better.
 
@@ -209,6 +210,9 @@ Each test holds out one corpus. The table is learned from the other corpora and 
 | IMPACT-BHL, Tesseract 5, Kraken and VLMs (mean) | Antiqua, 1708–1913 | 0.75 | 0.74 |
 | ICDAR 2019, 5 Antiqua subsets (mean) | Antiqua | 0.66 | 0.65 |
 | ICDAR 2019 DE4 and EN1 (mean) | Antiqua with long s, 16th–18th c. | 0.79 | 0.71 |
+| kurrent-vlm benchmark, 21 sources (mean) | Kurrent handwriting, Gemini, Claude and Transkribus | 0.68 | 0.71 |
+
+The `kurrent` test holds out one benchmark source at a time, so no page of the held-out source trains the table. `kurrent` beats or ties `general` on all 21 sources. Levenshtein scores 0.60.
 
 ## Learning costs
 

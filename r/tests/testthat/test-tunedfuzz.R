@@ -86,6 +86,7 @@ test_that("a pretrained table loads and serves as a prior", {
   expect_error(tfz_pretrained_costs("nonexistent"))
   expect_lt(tfz_distance("V", "B", tfz_pretrained_costs("fraktur")), 0.2)
   expect_gt(tfz_distance("V", "B", tfz_pretrained_costs("antiqua")), 0.2)
+  expect_lt(tfz_distance("p", "g", tfz_pretrained_costs("kurrent")), 0.5)
   table <- tfz_learn_costs(c("Rauch", "Huber"), c("Nauch", "Huber"), c(3, 30),
                            symmetric = FALSE, prior = general, prior_weight = 1e9)
   cost <- setNames(table$cost, paste(table$a, table$b))

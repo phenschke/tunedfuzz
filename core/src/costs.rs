@@ -4,12 +4,13 @@ use std::path::Path;
 use crate::Error;
 
 /// Names of the tables `Costs::pretrained` returns.
-pub const PRETRAINED: &[&str] = &["general", "antiqua", "fraktur"];
+pub const PRETRAINED: &[&str] = &["general", "antiqua", "fraktur", "kurrent"];
 
 const PRETRAINED_CSV: &[(&str, &str)] = &[
     ("general", include_str!("../data/general.csv")),
     ("antiqua", include_str!("../data/antiqua.csv")),
     ("fraktur", include_str!("../data/fraktur.csv")),
+    ("kurrent", include_str!("../data/kurrent.csv")),
 ];
 
 /// One direction `u -> v` of an edit with more than one character on a side.

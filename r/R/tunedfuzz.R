@@ -46,7 +46,7 @@ tfz_read_costs <- function(path, default = 1, symmetric = TRUE) {
 #'   or as the `prior` of `tfz_learn_costs()`.
 #' @param name Name of the pretrained table. `"general"` comes from every
 #'   training corpus, `"antiqua"` and `"fraktur"` from the corpora printed in
-#'   that type.
+#'   that type, and `"kurrent"` from HTR of German handwriting in Kurrent.
 #' @export
 tfz_pretrained_costs <- function(name = "general") {
   new_costs(costs_pretrained(name))
